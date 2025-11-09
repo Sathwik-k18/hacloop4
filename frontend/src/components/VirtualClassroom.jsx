@@ -3,7 +3,8 @@ import { Mic, MicOff, Video, VideoOff, PhoneOff, Send, Share2, MessageSquare, X 
 import Webcam from 'react-webcam';
 import io from 'socket.io-client';
 
-const SOCKET_SERVER = 'http://localhost:5000';
+// CRITICAL FIX: Use environment variable, fallback to localhost for development
+const SOCKET_SERVER = process.env.REACT_APP_API_URL || 'http://localhost:5000';
 
 export default function VideoConferenceApp() {
   const [roomId, setRoomId] = useState('');
@@ -93,7 +94,7 @@ export default function VideoConferenceApp() {
       localStreamRef.current = stream;
 
       // Connect to socket server
-      socketRef.current = io(SOCKET_SERVER);
+      socketRef.current = io(SOCKET_SERVER); // Uses the dynamic URL here
 
       // Add local participant
       setParticipants([{
